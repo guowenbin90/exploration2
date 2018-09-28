@@ -1,0 +1,116 @@
+<html>
+   <head>
+      <title>Contact</title>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+       
+      <style>
+         table, th , td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+         }
+         
+         table tr:nth-child(odd) {
+            background-color: #ffffff;
+         }
+         
+         table tr:nth-child(even) {
+            background-color: #eeeeee;
+         }
+      </style>
+      
+   </head>
+    
+   <script>
+         var mainApp = angular.module("contactApp", []);
+         
+         mainApp.controller('contactController', function($scope) {
+            $scope.reset = function(){
+               $scope.firstName = "";
+               $scope.lastName = "";
+               $scope.email = "";
+            }
+            
+            $scope.reset();
+             
+            $scope.contacts = ["Wenbin guowenbin@gmail.com", "Jing JingS@gmail.com", "Ameris Ameris44@gmail.com"];
+             
+            $scope.addItem = function () {
+                $scope.errortext = "";
+                if (!$scope.addMe) {return;}
+                if ($scope.contacts.indexOf($scope.addMe) == -1) {
+                    $scope.contacts.push($scope.addMe);
+                } else {
+                    $scope.errortext = "The item is already in your directory.";
+                }
+                $scope.addMe = null;
+            }
+            $scope.removeItem = function (x) {
+                $scope.errortext = "";    
+                $scope.contacts.splice(x, 1);
+            }
+         });
+   </script>
+    
+   <body>
+      
+      <div ng-app = "contactApp" ng-controller = "contactController" class="w3-card-2 w3-margin" style="max-width:400px;">
+      <header class="w3-container w3-light-grey w3-padding-16">
+        <h3 class="w3-text-gray">Directory</h3>
+      </header>   
+         <form name = "contactForm" novalidate>
+            <table border = "0">
+               <tr>
+                  <td>Enter first name:</td>
+                  <td><input name = "firstname" type = "text" ng-model = "firstName" required>
+                     <span style = "color:red" ng-show = "contactForm.firstname.$dirty && contactForm.firstname.$invalid">
+                        <span ng-show = "contactForm.firstname.$error.required">First Name is required.</span>
+                     </span>
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td>Enter last name: </td>
+                  <td><input name = "lastname"  type = "text" ng-model = "lastName" required>
+                     <span style = "color:red" ng-show = "studentForm.lastname.$dirty && contactForm.lastname.$invalid">
+                        <span ng-show = "contactForm.lastname.$error.required">Last Name is required.</span>
+                     </span>
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td>Email: </td><td><input name = "email" type = "email" ng-model = "email" length = "100" required>
+                     <span style = "color:red" ng-show = "studentForm.email.$dirty && contactForm.email.$invalid">
+                        <span ng-show = "contactForm.email.$error.required">Email is required.</span>
+                        <span ng-show = "contactForm.email.$error.email">Invalid email address.</span>
+                     </span>
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td>
+                     <button ng-click = "reset()" style="cursor:pointer;">Reset</button>
+                  </td>
+                  <td>
+                     <button ng-disabled = "contactForm.firstname.$dirty &&
+                        contactForm.firstname.$invalid || contactForm.lastname.$dirty &&
+                        contactForm.lastname.$invalid || contactForm.email.$dirty &&
+                        contactForm.email.$invalid" ng-click="addItem()" style="cursor:pointer;">Submit</button>
+                  </td>
+               </tr>
+					
+            </table>
+         </form>
+          
+          <h3>Full Name: {{firstName + " " + lastName}}</h3>
+          <h3>Email: {{email}}</h3>
+          
+         <h4 ng-repeat="firstName in contacts">{{firstName+" "}}<span ng-click="removeItem($index)" style="cursor:pointer;", class="w3-text-red">Delete</span></h4>
+        
+        
+          
+      </div>
+       
+   </body>
+</html>
